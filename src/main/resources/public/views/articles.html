@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人博客管理</title>
+    <script src="../js/jquery@3.3.1/jquery.js" type="text/javascript"></script>
+    <script>
+        function addArticle() {
+            //alert("add article")
+            window.location.href = "article.html?type=add";//新增了键值对
+        }
+        function modifyArticle(id) {
+            //alert("modify article"+id)
+            window.location.href = "article.html?type=modify&id="+id;
+        }
+        function deleteAricle(id) {
+            alert("delete article"+id)
+            //ajax 请求 get方法 url？id = xxx
+        }
+        function logout() {//注销功能
+            //ajax请求，后端删除session，返回success：true  前端解析响应数据，跳转到首页
+            $.ajax({
+                url:"../api/user/logout",
+                success:function (r) {
+                    if (r.success){//注销成功
+                        window.location.href = "../index.html";//跳转首页
+                    }else {
+                        alert("错误码："+ r.code + "\n错误信息：" + r.message);
+                    }
+                },
+                error:function (req,textStatus,err) {
+                    if (err != undefined && err != null){
+                        //err 有值，属于js语法报错
+                        alert(err)
+                    }else {
+                        alert(req.status)
+                    }
+                }
+            });
+        }
+
+    </script>
+    <script>
+        $(function () {
+            $.ajax({
+                url:"../api/article/queryByUser",//请求个人博客信息
+                //默认是get请求  json都是get请求
+                contentType:"json",//响应的数据类型
+                success:function (resp) {
+                    //resp已经由jquery经过反序列化处理 成为一个json对象(从字符串转为对象)
+                    //alert(JSON.stringify(resp))
+                    if (resp.success){
+                        let data = resp.data;//拿到数组包裹的多个对象
+                        let content = "";//拼接字符串 content
+                        for (let i in data) { //in 数组里的索引位置  ：遍历
+                            //作业 新增文章业务，删除，修改文章
+                            //新增按钮只需要一个，修改删除按钮和文章绑定
+                            //content拼接的内容，加上按钮，需要根据按钮id绑定点击事件，事件中做ajax请求
+                            content += "<li>";
+                            content +=      data[i].title;
+                            content += "</li>";
+                            content += "<button id='change' onclick='modifyArticle("+data[i].id+")'>修改文章</button>"
+                            content += ""
+                            content += "<button id='delete' onclick='deleteAricle("+data[i].id+")'>删除文章</button>"
+                        }
+                        $("#article_list").html(content)//根据id去元素，调用html方法
+                        // html方法表示：在标签内部 以传入的字符串content 填充进去
+                    }else {
+                        alert("错误码："+resp.code + "\n错误信息：" + resp.message)
+                    }
+                },
+                error:function (req,textStatus,err) {
+                    if (err != undefined && err != null){
+                        //err 有值，属于js语法报错
+                        alert(err)
+                    }else {
+                        alert(req.status)
+                    }
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<div style="height: 30px; background: rgba(186,122,122,0.87); padding-right:20px">
+    <a href="../index.html" style="float: right; margin-right: 20px">首页</a>
+    <a href="javascript:void (0) " onclick="logout()" style="float: right;">注销</a>
+</div>
+<input type="button" value="新增" onclick="addArticle()" />
+<ul id="article_list"></ul>
+
+</body>
+</html>

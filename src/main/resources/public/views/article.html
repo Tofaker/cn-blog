@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增/修改</title>
+    <script src="../js/jquery@3.3.1/jquery.js" type="text/javascript"></script>
+    <script>
+        function getQueryVariable() {
+            let json = {};
+            //window.location.search为queryString：？及之后的参数
+            if (window.location.search.indexOf("?") != -1){// !=-1  代表有问号
+                let query = window.location.search.substring(1);
+                console.log(window.location.search)
+                let vars = query.split("&")
+                for (let i = 0; i < vars.length; i++){
+                    let pair = vars[i].split("=")
+                    json[pair[0]] = pair[1];
+                }
+            }
+            return json;//函数返回值
+        }
+        $(function () {
+            //console.log(JSON.stringify(getQueryVariable()))
+            // 控制台打印getQueryVariable函数返回的json格式的数据，经stringify函数处理成字符串
+            let query = getQueryVariable();//当前url参数
+            let data = {};
+            if (query.type == 'modify'){
+                data.id = query.id;
+                //修改文章页面，需要初始化文章数据
+                $.ajax({
+                    url:'../api/article/query/' + query.id,
+                    success:function (resp) {
+                        if (resp.success){// (success:true, data:{id:xxx,title:xxx,content:xxx})
+                            let data = resp.data;
+                            $("#title").val(resp.data.title)//解析 resp.data返回的数据中的title
+                            $("#content").val(resp.data.content)//同理解析 content
+                        }else {
+                            alert("操作失败")
+                        }
+                    },
+                    error:function (req,textStatus,err) {
+                        alert(req.status)
+                    }
+
+                });
+            }
+            $("#article_form").submit(function () {
+                //设置data的文章标题和内容
+                data.title = $("#title").val();
+                data.content = $("#content").val();
+                console.log(JSON.stringify(data))
+                $.ajax({
+                    //TODO:调整url
+                    url:query.type == "add"?"../api/articleAdd":"../api/aritcleModify",//三木运算符   设置url
+                    type:"post",
+                    //TODO：后端如何接收并解析json格式数据，springmvc 解析请求体为json，使用什么注解
+                    dataType:"application/json",//传一个请求的数据类型
+                    data: data,
+                    contentType:"json",//响应的数据类型
+                    success:function (resp) {
+                        if (resp.success()){
+                            alert("操作成功")
+                            //TODO：1. 提供一个文章详情页面      正式操作为跳转到文章详情页面(只是预览，不能修改)
+                            //      2. 当前页面，新增/修改成功，跳转文章详情页面
+                            //      3. 首页，每一篇文章点击也可以跳转
+                            //      4. 第2,3 步，请求url携带id = xx的请求数据，在文章详情js代码中解析id
+                            //      jquery初始化方法中，根据id字段发送ajax获取文章详情信息
+                        }else {
+                            alert("操作失败")
+                        }
+                    },
+                    error:function (req,textStatus,err) {
+                        alert(req.status)
+                    }
+
+                })
+                return false;//禁用表单默认提交
+            })
+
+        })
+    </script>
+</head>
+<body>
+<form id="article_form"><!--/给个id，ajax自己提交-->
+    标题：<input type="text" id="title">
+    <br><br>
+    <textarea id="content" style="width: 500px;height: 300px"></textarea>
+    <br><br>
+    <input type="submit" value="提交">
+</form>
+
+</body>
+</html>
