@@ -48,6 +48,37 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!-- mybatis-spring-boot-starter: Mybatis框架在SpringBoot中集成的依赖包，
+                                Mybatis是一种数据库对象关系映射Object-Relationl Mapping（ORM）框架，
+                                其他还有如Hibernate等 -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.3</version>
+        </dependency>
+
+        <!-- Mybatis代码生成工具 -->
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>1.3.5</version>
+        </dependency>
+
+        <!-- druid-spring-boot-starter: 阿里Druid数据库连接池，同样的运行时需要 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <!-- JDBC：mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.49</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- spring-boot-devtools: SpringBoot的热部署依赖包 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -69,12 +100,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 

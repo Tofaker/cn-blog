@@ -26,10 +26,10 @@ $(function () {
             if (r.success){//true
                 let data = r.data;//取出data数据
                 if (data.user){//已登录
-                    $("#index_articles").show();//显示登录的div
+                    $("#index_login").show();//显示登录的div
                     $("#index_unlogin").hide();//隐藏未登录的div
                 }else {//未登录
-                    $("#index_articles").hide();
+                    $("#index_login").hide();
                     $("#index_unlogin").show();
                 }
                 let content = "";

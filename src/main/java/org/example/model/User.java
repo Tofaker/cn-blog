@@ -4,20 +4,26 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
+import java.util.Date;
 
-/**
- * Created with IntelliJ IDEA.
- * Description:
- * User: madala
- * Date: 2021-01-02;   Time: 11:23
- */
 @Getter
 @Setter
 @ToString
-public class User implements Serializable {//序列化时用到serializable接口
-    private static final long serialVersionUID = 1L;
+public class User {
+    
     private Integer id;
+
     private String username;
+
     private String password;
+
+    private String nickname;
+
+    private Date birthday;
+
+    private String phoneNumber;
+
+    private String email;
+
+    private String head;
 }

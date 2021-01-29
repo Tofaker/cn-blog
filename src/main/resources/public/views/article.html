@@ -48,10 +48,11 @@
                 //设置data的文章标题和内容
                 data.title = $("#title").val();
                 data.content = $("#content").val();
+                data.id = $("#id").val();
                 console.log(JSON.stringify(data))
                 $.ajax({
                     //TODO:调整url
-                    url:query.type == "add"?"../api/articleAdd":"../api/aritcleModify",//三木运算符   设置url
+                    url:query.type == "add"?"../api/aritcle/articleAdd":"../api/aritcle/aritcleModify"+data.id,//三木运算符   设置url
                     type:"post",
                     //TODO：后端如何接收并解析json格式数据，springmvc 解析请求体为json，使用什么注解
                     dataType:"application/json",//传一个请求的数据类型
